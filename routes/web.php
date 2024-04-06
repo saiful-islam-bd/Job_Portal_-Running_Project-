@@ -15,6 +15,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/about', [App\Http\Controllers\HomeController::class, 'about'])->name('about');
+Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
 
 Route::get('/jobs/single.job/{id}', [App\Http\Controllers\Jobs\SingleJobController::class, 'singleJobs'])->name('single.job');
 Route::post('/jobs/save', [App\Http\Controllers\Jobs\SingleJobController::class, 'saveJob'])->name('save.job');
