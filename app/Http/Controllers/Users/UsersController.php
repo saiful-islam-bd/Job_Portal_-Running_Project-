@@ -66,15 +66,15 @@ class UsersController extends Controller
             'name' => $request->name,
             'image' => $request->image,
             'job_title' => $request->job_title,
-            'cv' => $request->cv,
             'bio' => $request->bio,
             'facebook' => $request->facebook,
             'linkedin' => $request->linkedin,
             'twitter' => $request->twitter,
+            // 'cv' => $request->cv,
         ]);
 
         if ($updateProfileDetails) {
-            return redirect('/users/edit_profile/')->with('update', 'Profile Updated Sccessfully!');
+            return redirect('/users/profile')->with('update', 'Profile Updated Sccessfully!');
         }
     }
 

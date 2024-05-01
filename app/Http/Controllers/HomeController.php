@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Job\job;
+use App\Models\Job\Job;
+use App\Models\Category\Category;
+
+
+use DB;
 
 class HomeController extends Controller
 {
@@ -13,10 +17,16 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
+
+//commented by me
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
+
+    
 
     /**
      * Show the application dashboard.
@@ -25,23 +35,26 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         $jobs = Job::select()->take(5)->orderby('id', 'desc')->get();
         $totalJobs = Job::all()->count();
 
-        return view('home', compact('jobs', 'totalJobs'));
+        $categories = Category::select()->count();
+
+        $companies = Job::select('company_name')->count();
+
+        //trending jobs
+        $keywords = DB::table('searches')->select('keywords', DB::raw('Count(*) as `count`'))->groupby('keywords')->havingRaw('Count(*) > 0')->orderby('count', 'desc')->take(3)->get();
+
+        return view('home', compact('jobs', 'totalJobs', 'keywords', 'categories', 'companies'));
     }
 
     public function about()
     {
-
         return view('pages/about');
     }
-    
 
     public function contact()
     {
-
         return view('pages/contact');
     }
     

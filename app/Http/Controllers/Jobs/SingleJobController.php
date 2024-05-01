@@ -9,6 +9,7 @@ use App\Models\Job\job;
 use App\Models\Job\JobSaved;
 use App\Models\Job\JobApply;
 use App\Models\Category\Category;
+use App\Models\Job\Search;
 use Auth;
 
 class SingleJobController extends Controller
@@ -28,20 +29,31 @@ class SingleJobController extends Controller
             ->take(5)
             ->count();
 
-        //saved jobs
-        $savedJob = JobSaved::where('singleJob_id', $id)
-            ->where('user_id', Auth::user()->id)
-            ->count();
-
-        //appliedJob by meee!
-        $appliedJob = JobApply::where('singleJob_id', $id)
-            ->where('user_id', Auth::user()->id)
-            ->count();
 
         //Categories
         $categories = Category::all();
 
-        return view('jobs.single-job', compact('singleJob', 'relatedJobs', 'relatedJobsCount', 'savedJob', 'appliedJob', 'categories'));
+
+
+        //Single job page validation
+        if (auth()->user()) {
+            //saved jobs
+            $savedJob = JobSaved::where('singleJob_id', $id)
+                ->where('user_id', Auth::user()->id)
+                ->count();
+
+            //appliedJob by meee!
+            $appliedJob = JobApply::where('singleJob_id', $id)
+                ->where('user_id', Auth::user()->id)
+                ->count();
+
+            return view('jobs.single-job', compact('singleJob', 'relatedJobs', 'relatedJobsCount', 'savedJob', 'appliedJob', 'categories'));
+        }
+        else{
+
+            return view('jobs.single-job', compact('singleJob', 'relatedJobs', 'relatedJobsCount', 'categories'));
+        }
+
     }
 
     public function saveJob(Request $request)
@@ -61,11 +73,14 @@ class SingleJobController extends Controller
         }
     }
 
+
+    //Job apply section
     public function applyJob(Request $request)
     {
-        if ($request->cv == 'No cv') {
-            return redirect('/jobs/single.job/' . $request->singleJob_id . '')->with('apply', 'Upload your cv first in your profile!');
-        } else {
+        if (Auth::user()->cv == 'no cv') {
+            return redirect('/jobs/single.job/' . $request->singleJob_id . '')->with('apply', 'First upload your cv in your profile!');
+        }
+        else {
             $applyJob = JobApply::create([
                 'cv' => Auth::user()->cv,
                 'singleJob_id' => $request->singleJob_id,
@@ -81,5 +96,34 @@ class SingleJobController extends Controller
                 return redirect('/jobs/single.job/' . $request->singleJob_id . '')->with('applied', 'Job Applied Successfully!');
             }
         }
+    }
+    
+
+
+
+    //Search section
+    public function search(Request $request)
+    {
+        Request()->validate([
+            'job_title' => 'required',
+            'job_region' => 'required',
+            'job_type' => 'required',
+        ]);
+
+        Search::create([
+            'keywords' => request()->job_title,
+        ]);
+
+        $job_title = $request->get('job_title');
+        $job_region = $request->get('job_region');
+        $job_type = $request->get('job_type');
+
+        $searches = Job::select()
+            ->where('job_title', 'like', "%$job_title%")
+            ->where('job_region', 'like', "%$job_region%")
+            ->where('job_type', 'like', "%$job_type%")
+            ->get();
+
+        return view('jobs.search', compact('searches'));
     }
 }

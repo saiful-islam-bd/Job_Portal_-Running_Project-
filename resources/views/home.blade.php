@@ -9,19 +9,20 @@
                 <div class="col-md-12">
                     <div class="mb-5 text-center">
                         <h1 class="text-white font-weight-bold">The Easiest Way To Get Your Dream Job</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate est, consequuntur
-                            perferendis.</p>
+                        <p>A non profit public service's Website. To get your perfect job stay tuned with us.</p>
                     </div>
-                    <form method="post" class="search-jobs-form">
+                    <form method="post" action="{{ route('search.job') }}" class="search-jobs-form">
+                        @csrf
                         <div class="row mb-5">
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <input type="text" class="form-control form-control-lg"
-                                    placeholder="Job title, Company...">
+                                <input type="text" name="job_title" class="form-control form-control-lg"
+                                    placeholder="Job title">
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
+                                <select class="selectpicker" name="job_region" data-style="btn-white btn-lg" data-width="100%"
                                     data-live-search="true" title="Select Region">
                                     <option>Anywhere</option>
+                                    <option>Remote</option>
                                     <option>Dhaka</option>
                                     <option>Chattogram</option>
                                     <option>Rajshahi</option>
@@ -30,17 +31,18 @@
                                     <option>Khulna</option>
                                     <option>Barisal</option>
                                     <option>Rangpur</option>
+                                    <option>Banani</option>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <select class="selectpicker" data-style="btn-white btn-lg" data-width="100%"
+                                <select class="selectpicker" name="job_type" data-style="btn-white btn-lg" data-width="100%"
                                     data-live-search="true" title="Select Job Type">
-                                    <option>Part Time</option>
-                                    <option>Full Time</option>
+                                    <option>Full time</option>
+                                    <option>Part time</option>                                   
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0">
-                                <button type="submit" class="btn btn-primary btn-lg btn-block text-white btn-search"><span
+                                <button name="submit" type="submit" class="btn btn-primary btn-lg btn-block text-white btn-search"><span
                                         class="icon-search icon mr-2"></span>Search Job</button>
                             </div>
                         </div>
@@ -48,9 +50,11 @@
                             <div class="col-md-12 popular-keywords">
                                 <h3>Trending Keywords:</h3>
                                 <ul class="keywords list-unstyled m-0 p-0">
-                                    <li><a href="#" class="">UI Designer</a></li>
-                                    <li><a href="#" class="">Python</a></li>
-                                    <li><a href="#" class="">Developer</a></li>
+
+                                    @foreach ($keywords as $keyword)
+                                    <li><a href="#" class="">{{ $keyword->keywords }}</a></li>
+                                    @endforeach
+                                   
                                 </ul>
                             </div>
                         </div>
@@ -70,7 +74,7 @@
         <div class="container">
             <div class="row mb-5 justify-content-center">
                 <div class="col-md-7 text-center">
-                    <h2 class="section-title mb-2 text-white">JobBoard Site Stats</h2>
+                    <h2 class="section-title mb-2 text-white">JobPortal Site Stats</h2>
                     <p class="lead text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita unde
                         officiis recusandae sequi excepturi corrupti.</p>
                 </div>
@@ -79,28 +83,28 @@
 
                 <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                     <div class="d-flex align-items-center justify-content-center mb-2">
-                        <strong class="number" data-number="1930">0</strong>
+                        <strong class="number" data-number="10">0</strong>
                     </div>
                     <span class="caption">Candidates</span>
                 </div>
 
                 <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                     <div class="d-flex align-items-center justify-content-center mb-2">
-                        <strong class="number" data-number="54">0</strong>
+                        <strong class="number" data-number="{{ $totalJobs }}">0</strong>
                     </div>
                     <span class="caption">Jobs Posted</span>
                 </div>
 
                 <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                     <div class="d-flex align-items-center justify-content-center mb-2">
-                        <strong class="number" data-number="120">0</strong>
+                        <strong class="number" data-number="{{ $categories }}">0</strong>
                     </div>
-                    <span class="caption">Jobs Filled</span>
+                    <span class="caption">Categories</span>
                 </div>
 
                 <div class="col-6 col-md-6 col-lg-3 mb-5 mb-lg-0">
                     <div class="d-flex align-items-center justify-content-center mb-2">
-                        <strong class="number" data-number="550">0</strong>
+                        <strong class="number" data-number="{{ $companies }}">0</strong>
                     </div>
                     <span class="caption">Companies</span>
                 </div>
@@ -117,7 +121,7 @@
 
             <div class="row mb-5 justify-content-center">
                 <div class="col-md-7 text-center">
-                    <h2 class="section-title mb-2"><span style="color: #89ba16;">{{$totalJobs}}</span> Job Listed</h2>
+                    <h2 class="section-title mb-2"><span style="color: #89ba16;">{{ $totalJobs }}</span> Job Listed</h2>
                 </div>
             </div>
 
@@ -128,8 +132,8 @@
                     <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
                         <a href="{{ route('single.job', $job->id)}}"></a>
                         <div class="job-listing-logo">
-                            <img src="{{ asset('assets/images/'.$job->image.'') }} "
-                                alt="Free Website Template by Free-Template.co" class="img-fluid">
+                            <img src="{{ asset('assets/images/'.$job->image.'') }}"
+                                alt="image" style="max-width: 100%; height: 105px;">
                         </div>
 
                         <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
@@ -166,7 +170,7 @@
                         adipisci impedit.</p>
                 </div>
                 <div class="col-md-3 ml-auto">
-                    <a href="#" class="btn btn-warning btn-block btn-lg">Sign Up</a>
+                    <a href="{{ route('register') }}" class="btn btn-warning btn-block btn-lg">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -224,6 +228,7 @@
 
             <div class="container">
                 <div class="row">
+                    <p class="text-center" style="font-size: 2.5rem; font-weight:800">Testimonials</p>
                     <div class="col-lg-6 align-self-center text-center text-lg-left">
                         <blockquote>
                             <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero
@@ -241,6 +246,7 @@
 
             <div class="container">
                 <div class="row">
+                    <p class="text-center" style="font-size: 2.5rem; font-weight:800">Testimonials</p>
                     <div class="col-lg-6 align-self-center text-center text-lg-left">
                         <blockquote>
                             <p>&ldquo;Soluta quasi cum delectus eum facilis recusandae nesciunt molestias accusantium libero
@@ -277,7 +283,7 @@
                 </div>
                 <div class="col-md-6 ml-auto align-self-end">
                     <img src="{{ asset('assets/images/apps.png') }}" alt="Free Website Template by Free-Template.co"
-                        class="img-fluid">
+                        style="max-width: 90%;">
                 </div>
             </div>
         </div>

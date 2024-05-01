@@ -11,7 +11,7 @@
                     <div class="custom-breadcrumbs">
                         <a href="#">Home</a> <span class="mx-2 slash">/</span>
                         <a href="#">Job</a> <span class="mx-2 slash">/</span>
-                        <span class="text-white"><strong>Categorized Jobs</strong></span>
+                        <span class="text-white"><strong>{{ $name }}</strong></span>
                     </div>
                 </div>
             </div>
@@ -28,9 +28,9 @@
                 </div>
             </div>
 
-            @if ($jobs->count() > 0)
+            @if ($cjobs->count() > 0)
 
-                @foreach ($jobs as $job)
+                @foreach ($cjobs as $job)
 
                     <ul class="job-listings">
                         <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">

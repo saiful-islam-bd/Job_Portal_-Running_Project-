@@ -66,7 +66,7 @@
 
                         <div class="form-group">
                             <label for="job-title">Job Title</label>
-                            <input type="text" name="job_title" class="form-control" id="job-title"
+                            <input type="text" name="job_title" class="form-control" 
                                 value="{{ $editProfileData->job_title }}" placeholder="Job Title">
                         </div>
 

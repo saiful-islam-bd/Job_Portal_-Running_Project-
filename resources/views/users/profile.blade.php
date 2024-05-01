@@ -15,9 +15,10 @@
                         <div class="text-center mt-3">
                             <!-- <span class="bg-secondary p-1 px-4 rounded text-white">Pro</span> -->
                             <h5 class="mt-2 mb-0">{{ $profile->name }}</h5>
+
                             <span style="display: block;">{{ $profile->job_title }}</span>
 
-                            <a href="{{ asset('assets/Cvs/'.$profile->cv.'')}}" class="btn btn-danger btn-block btn-md" style="width: 25%;">Download CV</a>
+                            <a href="{{ asset('assets/Cvs/'.$profile->cv.'')}}" class="btn btn-success btn-block btn-md" style="width: 25%; margin-top:10px;  margin-bottom:10px">Download CV</a>
                      
                             <div class="px-4 mt-1">
                                 <p class="fonts">{{ $profile->bio }}</p>
@@ -30,6 +31,8 @@
                                 <a href="twitter" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter"></span></a>
                                 <a href="linkedin" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-linkedin"></span></a>
                             </div>
+
+                            <a href="{{ route('edit.profile') }}" class="btn btn-dark btn-block btn-md" style="width: 25%; margin-top:20px;">Update Profile</a>
 
                         </div>
 

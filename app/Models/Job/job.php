@@ -5,7 +5,7 @@ namespace App\Models\Job;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class job extends Model
+class Job extends Model
 {
     use HasFactory;
 
@@ -27,7 +27,7 @@ class job extends Model
         'application_deadline',
         'job_description',
         'responsibilities',
-        'education_&_experience',
+        'education_experience',
         'other_benifits',
     ];
 

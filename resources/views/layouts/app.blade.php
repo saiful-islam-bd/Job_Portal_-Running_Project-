@@ -74,7 +74,7 @@
 
                                         <a  class="dropdown-item" href="{{ route('applications') }}">Applications</a>
 
-                                        <a  class="dropdown-item" href="{{ route('edit.profile') }}">Edit Profile</a>
+                                        <a  class="dropdown-item" href="{{ route('edit.profile') }}">Update Profile</a>
                                         
                                         <a  class="dropdown-item" href="{{ route('update.cv') }}">Update CV</a>
 
@@ -97,9 +97,11 @@
 
                     <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
                         <div class="ml-auto">
-                            <a href="post-job.html"
+
+                            {{-- <a href="post-job.html"
                                 class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
-                                    class="mr-2 icon-add"></span>Post a Job</a>
+                                    class="mr-2 icon-add"></span>Post a Job</a> --}}
+
             {{-- blue background color button --}}
                             {{-- <a href="register.html"
                                 class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span

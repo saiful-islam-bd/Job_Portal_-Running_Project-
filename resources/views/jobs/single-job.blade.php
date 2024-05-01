@@ -52,7 +52,7 @@
                 <div class="col-lg-8 mb-4 mb-lg-0">
                     <div class="d-flex align-items-center">
                         <div class="border p-2 d-inline-block mr-3 rounded">
-                            <img src="{{ asset('assets/images/' . $singleJob->image . '') }}" alt="Image">
+                            <img src="{{ asset('assets/images/' . $singleJob->image . '') }}" alt="Image" style="max-width: 100%; height: 105px;">
                         </div>
                         <div>
                             <h2>{{ $singleJob->job_title }}</h2>
@@ -86,7 +86,7 @@
                                         class="icon-check_circle mr-2 text-muted"></span><span>{{ $singleJob->responsibilities }}</span>
                                 </li> --}}
                                 <p>{{ $singleJob->responsibilities }}</p>
-                             
+
                             </ul>
                         </div>
 
@@ -137,54 +137,66 @@
                         <div class="row mb-5">
                             <div class="col-6">
 
-                                <form action="{{ route('save.job') }}" method="POST">
-                                    @csrf
-                                    <input name="singleJob_id" type="hidden" value="{{ $singleJob->id }}">
-                                    <input name="user_id" type="hidden" value="{{ Auth::user()->id }}">
-                                    <input name="singleJob_image" type="hidden" value="{{ $singleJob->image }}">
-                                    <input name="singleJob_title" type="hidden" value="{{ $singleJob->job_title }}">
-                                    <input name="company_name" type="hidden" value="{{ $singleJob->company_name }}">
-                                    <input name="singleJob_region" type="hidden" value="{{ $singleJob->job_region }}">
-                                    <input name="singleJob_type" type="hidden" value="{{ $singleJob->job_type }}">
+                                @if (isset(Auth::user()->id))
+                                    <form action="{{ route('save.job') }}" method="POST">
+                                        @csrf
+                                        <input name="singleJob_id" type="hidden" value="{{ $singleJob->id }}">
+                                        <input name="user_id" type="hidden" value="{{ Auth::user()->id }}">
+                                        <input name="singleJob_image" type="hidden" value="{{ $singleJob->image }}">
+                                        <input name="singleJob_title" type="hidden" value="{{ $singleJob->job_title }}">
+                                        <input name="company_name" type="hidden" value="{{ $singleJob->company_name }}">
+                                        <input name="singleJob_region" type="hidden"
+                                            value="{{ $singleJob->job_region }}">
+                                        <input name="singleJob_type" type="hidden" value="{{ $singleJob->job_type }}">
 
-                                    @if ($savedJob > 0)
-                                        <button class="btn btn-block btn-dark btn-md" disabled><i class="icon-heart"></i>
-                                            Job Saved</button>
-                                    @else
-                                        <button name="submit" type="submit"
-                                            class="btn btn-block btn-primary btn-md">Save
-                                            Job</button>
-                                    @endif
+                                        @if ($savedJob > 0)
+                                            <button class="btn btn-block btn-dark btn-md" disabled><i
+                                                    class="icon-heart"></i>
+                                                Job Saved</button>
+                                        @else
+                                            <button name="submit" type="submit"
+                                                class="btn btn-block btn-primary btn-md">Save
+                                                Job</button>
+                                        @endif
 
-                                </form>
+                                    </form>
+                                @endif
+
 
                             </div>
 
                             <div class="col-6">
-                                {{-- Apply Form --}}
-                                <form action="{{ route('apply.job') }}" method="POST">
-                                    @csrf
-                                    <input name="singleJob_id" type="hidden" value="{{ $singleJob->id }}">
-                                    {{-- <input name="user_id" type="hidden" value="{{ Auth::user()->id }}"> --}}
-                                    <input name="singleJob_image" type="hidden" value="{{ $singleJob->image }}">
-                                    <input name="singleJob_title" type="hidden" value="{{ $singleJob->job_title }}">
-                                    <input name="company_name" type="hidden" value="{{ $singleJob->company_name }}">
-                                    <input name="singleJob_region" type="hidden" value="{{ $singleJob->job_region }}">
-                                    <input name="singleJob_type" type="hidden" value="{{ $singleJob->job_type }}">
+                                @if (isset(Auth::user()->id))
+                                    {{-- Apply Form --}}
+                                    <form action="{{ route('apply.job') }}" method="POST">
+                                        @csrf
+                                        <input name="singleJob_id" type="hidden" value="{{ $singleJob->id }}">
+                                        {{-- <input name="user_id" type="hidden" value="{{ Auth::user()->id }}"> --}}
+                                        <input name="singleJob_image" type="hidden" value="{{ $singleJob->image }}">
+                                        <input name="singleJob_title" type="hidden"
+                                            value="{{ $singleJob->job_title }}">
+                                        <input name="company_name" type="hidden"
+                                            value="{{ $singleJob->company_name }}">
+                                        <input name="singleJob_region" type="hidden"
+                                            value="{{ $singleJob->job_region }}">
+                                        <input name="singleJob_type" type="hidden" value="{{ $singleJob->job_type }}">
 
-                                    {{-- <button name="submit" type="submit" class="btn btn-block btn-primary btn-md">Apply Job</button> --}}
+                                        {{-- <button name="submit" type="submit" class="btn btn-block btn-primary btn-md">Apply Job</button> --}}
 
-                                    @if ($appliedJob > 0)
-                                        <button class="btn btn-block btn-dark btn-md" disabled><i class="icon-done"></i>
-                                            Job Applied Successfully!</button>
-                                    @else
-                                        <button name="submit" type="submit"
-                                            class="btn btn-block btn-primary btn-md">Apply
-                                            Job</button>
-                                    @endif
+                                        @if ($appliedJob > 0)
+                                            <button class="btn btn-block btn-dark btn-md" disabled><i
+                                                    class="icon-done"></i>
+                                                Job Applied Successfully!</button>
+                                        @else
+                                            <button name="submit" type="submit"
+                                                class="btn btn-block btn-primary btn-md">Apply
+                                                Job</button>
+                                        @endif
 
-                                </form>
-
+                                    </form>
+                                @else
+                                    <a href="{{ route('login') }}"><button class="btn btn-block btn-primary btn-md">Log in to Apply This Job</button></a>
+                                @endif
 
                             </div>
 
@@ -238,7 +250,8 @@
                             <ul class="list-unstyled pl-3 mb-0">
 
                                 @foreach ($categories as $category)
-                                    <li class="mb-2"><a href="{{ route('categories.job', $category->name) }}" > {{ $category->name }} </a> </li>
+                                    <li class="mb-2"><a href="{{ route('categories.job', $category->name) }}">
+                                            {{ $category->name }} </a> </li>
                                 @endforeach
 
                             </ul>
