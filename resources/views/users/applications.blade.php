@@ -37,7 +37,7 @@
                             <a href="{{ route('single.job', $job->singleJob_id) }}"></a>
                             <div class="job-listing-logo">
                                 <img src="{{ asset('assets/images/' . $job->singleJob_image . '') }} "
-                                    alt="Free Website Template by Free-Template.co" class="img-fluid">
+                                    alt="" style="max-width: 100%; height: 105px;">
                             </div>
 
                             <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">

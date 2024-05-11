@@ -21,38 +21,53 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/about', [App\Http\Controllers\HomeController::class, 'about'])->name('about');
 Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
 
-Route::get('/jobs/single.job/{id}', [App\Http\Controllers\Jobs\SingleJobController::class, 'singleJobs'])->name('single.job');
-Route::post('/jobs/save', [App\Http\Controllers\Jobs\SingleJobController::class, 'saveJob'])->name('save.job');
-Route::post('/jobs/apply', [App\Http\Controllers\Jobs\SingleJobController::class, 'applyJob'])->name('apply.job');
+Route::group(['prefix' => 'jobs'], function() {
+
+    Route::get('/single.job/{id}', [App\Http\Controllers\Jobs\SingleJobController::class, 'singleJobs'])->name('single.job');
+    Route::post('/save', [App\Http\Controllers\Jobs\SingleJobController::class, 'saveJob'])->name('save.job');
+    Route::post('/apply', [App\Http\Controllers\Jobs\SingleJobController::class, 'applyJob'])->name('apply.job');
+
+});
+
 Route::any('search', [App\Http\Controllers\Jobs\SingleJobController::class, 'search'])->name('search.job');
 
 Route::get('/categories/single_job/{name}', [App\Http\Controllers\Categories\CategoriesController::class, 'categoryJobs'])->name('categories.job');
 
-Route::get('/users/profile', [App\Http\Controllers\Users\UsersController::class, 'profile'])->name('profile');
-Route::get('/users/applications', [App\Http\Controllers\Users\UsersController::class, 'applications'])->name('applications');
-Route::get('/users/saved_jobs', [App\Http\Controllers\Users\UsersController::class, 'savedJobs'])->name('saved_jobs');
 
-Route::get('/users/edit_profile', [App\Http\Controllers\Users\UsersController::class, 'editProfile'])->name('edit.profile');
-Route::post('/users/edit_profile', [App\Http\Controllers\Users\UsersController::class, 'updateProfile'])->name('update.profile');
+Route::group(['prefix' => 'users'], function(){
 
-Route::get('/users/edit_cv', [App\Http\Controllers\Users\UsersController::class, 'editCV'])->name('edit.cv');
-Route::post('/users/edit_cv', [App\Http\Controllers\Users\UsersController::class, 'updateCV'])->name('update.cv');
+    Route::get('/profile', [App\Http\Controllers\Users\UsersController::class, 'profile'])->name('profile');
+    Route::get('/applications', [App\Http\Controllers\Users\UsersController::class, 'applications'])->name('applications');
+    Route::get('/saved_jobs', [App\Http\Controllers\Users\UsersController::class, 'savedJobs'])->name('saved_jobs');
+    
+    Route::get('/edit_profile', [App\Http\Controllers\Users\UsersController::class, 'editProfile'])->name('edit.profile');
+    Route::post('/edit_profile', [App\Http\Controllers\Users\UsersController::class, 'updateProfile'])->name('update.profile');
+    
+    Route::get('/edit_cv', [App\Http\Controllers\Users\UsersController::class, 'editCV'])->name('edit.cv');
+    Route::post('/edit_cv', [App\Http\Controllers\Users\UsersController::class, 'updateCV'])->name('update.cv');
+    
+});
 
 
- 
+
+//backend routes
 Route::get('admin/login', [App\Http\Controllers\Admin\AdminController::class, 'viewLogin'])->name('view.login')->middleware('checkforauth');
 Route::post('admin/login', [App\Http\Controllers\Admin\AdminController::class, 'checkLogin'])->name('check.login');
 
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function() {
+
+    //dashboard
     Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-    //admins
+    //show admins
     Route::get('/all_admins', [App\Http\Controllers\Admin\AdminController::class, 'admins'])->name('view.admins');
     
+    //create admins
     Route::get('/create_admins', [App\Http\Controllers\Admin\AdminController::class, 'createAdmins'])->name('create.admins');
     Route::post('/create_admins', [App\Http\Controllers\Admin\AdminController::class, 'storeAdmins'])->name('store.admins');
     
+    //delete admins
     Route::get('/delete_admins/{id}', [App\Http\Controllers\Admin\AdminController::class, 'deleteAdmins'])->name('delete.admins');
     
     //show categories
@@ -87,9 +102,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function() {
 
      //show applications
      Route::get('/display_applications', [App\Http\Controllers\Admin\AdminController::class, 'displayApplications'])->name('display.applications');
+     
+     //delete applications
      Route::get('/delete_applications/{id}', [App\Http\Controllers\Admin\AdminController::class, 'deleteApplications'])->name('delete.applications');
      
-
 });
 
 
